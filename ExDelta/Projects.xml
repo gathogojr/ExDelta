@@ -1,0 +1,61 @@
+﻿<edmx:Edmx xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
+  <edmx:DataServices>
+    <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="ExDelta.Models">
+      <EntityType Name="Task">
+        <Key>
+          <PropertyRef Name="Id"/>
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="Description" Type="Edm.String"/>
+        <Property Name="ProjectId" Type="Edm.Int32"/>
+        <Property Name="MilestoneId" Type="Edm.Int32"/>
+        <Property Name="Start" Type="Edm.DateTimeOffset" Nullable="false"/>
+        <Property Name="End" Type="Edm.DateTimeOffset" Nullable="false"/>
+        <NavigationProperty Name="Project" Type="ExDelta.Models.Project">
+          <ReferentialConstraint Property="ProjectId" ReferencedProperty="Id"/>
+        </NavigationProperty>
+        <NavigationProperty Name="Milestone" Type="ExDelta.Models.Milestone">
+          <ReferentialConstraint Property="MilestoneId" ReferencedProperty="Id"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="Milestone">
+        <Key>
+          <PropertyRef Name="Id"/>
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="Name" Type="Edm.String"/>
+        <Property Name="ProjectId" Type="Edm.Int32"/>
+        <Property Name="Start" Type="Edm.DateTimeOffset" Nullable="false"/>
+        <Property Name="End" Type="Edm.DateTimeOffset" Nullable="false"/>
+        <NavigationProperty Name="Project" Type="ExDelta.Models.Project">
+          <ReferentialConstraint Property="ProjectId" ReferencedProperty="Id"/>
+        </NavigationProperty>
+        <NavigationProperty Name="Tasks" Type="Collection(ExDelta.Models.Task)"/>
+      </EntityType>
+      <EntityType Name="Project">
+        <Key>
+          <PropertyRef Name="Id"/>
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="Name" Type="Edm.String"/>
+        <Property Name="Start" Type="Edm.DateTimeOffset" Nullable="false"/>
+        <Property Name="End" Type="Edm.DateTimeOffset" Nullable="false"/>
+        <NavigationProperty Name="Tasks" Type="Collection(ExDelta.Models.Task)"/>
+        <NavigationProperty Name="Milestones" Type="Collection(ExDelta.Models.Milestone)"/>
+      </EntityType>
+    </Schema>
+    <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="Default">
+      <Function Name="KeyProjects" IsBound="true" EntitySetPath="bindingParameter">
+        <Parameter Name="bindingParameter" Type="Collection(ExDelta.Models.Project)"/>
+        <ReturnType Type="Collection(ExDelta.Models.Project)"/>
+      </Function>
+      <Function Name="KeyMilestones" IsBound="true" EntitySetPath="bindingParameter/Milestones">
+        <Parameter Name="bindingParameter" Type="Collection(ExDelta.Models.Project)"/>
+        <ReturnType Type="Collection(ExDelta.Models.Milestone)"/>
+      </Function>
+      <EntityContainer Name="Container">
+        <EntitySet Name="Projects" EntityType="ExDelta.Models.Project"/>
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>
