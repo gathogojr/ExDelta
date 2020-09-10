@@ -1,6 +1,6 @@
-Using EntitySetPath
+### Using EntitySetPath
 
-REF: Projects.xml
+**REF: Projects.xml**
 ```xml
       <Function Name="KeyProjects" IsBound="true" EntitySetPath="bindingParameter">
         <Parameter Name="bindingParameter" Type="Collection(ExDelta.Models.Project)"/>
@@ -15,7 +15,7 @@ REF: Projects.xml
       </EntityContainer>
 ```
 
-REF: ProjectsController
+**REF: ProjectsController**
 ```c#
 // ...
         [EnableQuery]
@@ -30,9 +30,11 @@ REF: ProjectsController
             return _db.Milestones;
         }
 // ...
-
-Working examples of $expand on Edm Function
 ```
+
+#### Working examples of $expand on Edm Function
+
 http://localhost:16152/odata/Projects/KeyProjects?$expand=Milestones($filter=contains(Name, 'tion'))
 http://localhost:16152/odata/Projects/KeyMilestones?$expand=Tasks($filter=contains(Description, 'Install'))
 ```
+Inspite of not exposing `Milestones` entity set, you're able `$expand` the `Milestone` collection returned by `KeyMilestones` Edm function and even apply a `$filter`
